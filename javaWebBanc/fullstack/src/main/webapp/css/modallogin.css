@@ -1,0 +1,466 @@
+@charset "utf-8";
+
+
+
+/* modal login */
+.container-modal {
+	background: rgba(0, 0, 0, .5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 20px;
+	width: 100vw;
+	height: 100vh;
+	top: 0px;
+	left: 0px;
+	z-index: 2000;
+	position: fixed;
+	background-image: linear-gradient(to top, transparent, rgba(0, 0, 0, 0.5));
+	box-shadow: 5px 5px 8px 5px rgba(0, 0, 0, 0.7);
+}
+
+.close-modal {
+	display: none;
+}
+
+.btn-close-modal {
+	padding: 8px;
+	cursor: pointer;
+	border-radius: 15px;
+	color: yellow;
+	background-color: rgba(205, 204, 118, 0.2);
+	background-image: linear-gradient(to top, transparent, rgba(0, 0, 0, 0.5));
+	width: 175px;
+	height: 80px;
+	top: 450px;
+	left: 290px;
+	z-index: 2000;
+	position: fixed;
+}
+
+.content {
+	background-color: rgba(2, 4, 4, 1);
+	background-image: linear-gradient(to top, transparent, rgba(25, 64, 118, 0.8));
+	box-shadow: 5px 5px 8px 5px rgba(0, 0, 0, 0.7);
+	border-radius: 15px;
+	width: 950px;
+	height: 55%;
+	justify-content: space-between;
+	align-items: center;
+	position: relative;
+	padding: 10px;
+}
+
+.content::before{
+     content:"";
+	 position:absolute;
+	 background-image: url("../img/animation.PNG");
+	 background-size: 157%;
+     background-repeat: no-repeat;
+	 width: 40%;
+	 height:100%;
+	 border-top-left-radius:15px;
+	 border-bottom-left-radius:15px;
+	 left: 0;
+     box-shadow: 5px 5px 8px 5px rgba(0,0,0,0.8);
+	 }
+
+.title {
+	font-size: 28px;
+	font-weight: bold;
+	text-transform: capitalize;
+}
+
+.title-primary {
+	color: #fff;
+}
+
+.title-second {
+	color: #4682B4;
+}
+
+.description {
+	font-size: 14px;
+	font-weight: 300;
+	line-height: 25px;
+}
+
+.description-primary {
+	color: #fff;
+}
+
+.description-second {
+	color: #7f8c8d;
+}
+
+.btn {
+	border-radius: 15px;
+	text-transform: uppercase;
+	color: #fff;
+	font-size: 10px;
+	padding: 10px 40px;
+	cursor: pointer;
+	font-weight: bold;
+	width: 155px;
+	align-self: center;
+	border: none;
+}
+
+.btn-primary {
+	background-color: transparent;
+	border: 1px solid #fff;
+	transition: background-color .4s;
+}
+
+.btn-primary:hover {
+	background-color: #fff;
+	color: #0000CD;
+}
+
+.btn-second {
+	background-color: #125e9c;
+	border: 1px solid #58af9b;
+	transition: background-color .4s;
+}
+
+.btn-second:hover {
+	background-color: #fff;
+	border: 1px solid #58af9b;
+	color: #0000CD;
+}
+
+#btn-cad {
+	border-radius: 15px;
+	text-transform: uppercase;
+	color: #fff;
+	font-size: 10px;
+	padding: 10px 20px;
+	cursor: pointer;
+	font-weight: bold;
+	width: 125px;
+	align-self: center;
+	border: none;
+	background-color: #125e9c;
+	border: 1px solid #58af9b;
+	transition: background-color .4s;
+}
+
+#btn-cad:hover {
+	background-color: #fff;
+	border: 1px solid #58af9b;
+	color: #0000CD;
+}
+
+.first-content {
+	display: flex;
+}
+
+.first-content .second-column {
+	z-index: 12;
+}
+
+.first-column {
+	text-align: center;
+	width: 40%;
+	z-index: 10;
+}
+
+.second-column{
+	width:60%;
+	display:flex;
+	flex-direction: column;
+	align-items:center;
+}
+
+.cad input[type=text], .cad input[type=password] {
+	border: 2px solid blue;
+	background-color: white;
+}
+
+.cad input[type=text]:focus, input[type=email]:focus, input[type=password]:focus
+	{
+	border: 2px solid white;
+	background-color: blue;
+	color: yellow;
+}
+
+.cad ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+	color: rgba(102, 144, 234, 8);
+	opacity: 1; /* Firefox */
+}
+
+.cad :-ms-input-placeholder { /* Internet Explorer 10-11 */
+	color: rgba(102, 144, 234, 8);
+}
+
+.cad ::-ms-input-placeholder { /* Microsoft Edge */
+	color: rgba(102, 144, 234, 8);
+}
+
+.login input[type=text], .login input[type=password] {
+	border: 2px solid white;
+	background-color: blue;
+	color: green;
+}
+
+.login input[type=text]:focus,
+.login input[type=password]:focus
+{
+  border: 2px solid blue;
+  background-color:white;
+  color:blue;
+}
+
+.login ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+	color: rgba(102, 144, 234, 8);
+	opacity: 1; /* Firefox */
+}
+
+.login :-ms-input-placeholder { /* Internet Explorer 10-11 */
+	color: rgba(102, 144, 234, 8);
+}
+
+.login ::-ms-input-placeholder { /* Microsoft Edge */
+	color: rgba(102, 144, 234, 8);
+}
+
+.list-social-media {
+	display: flex;
+	list-style-type: none;
+}
+
+.item-social-media {
+	padding: 5px;
+}
+
+.form {
+	display: flex;
+	flex-direction: column;
+	width: 50%;
+}
+
+.form input {
+	height: 40px;
+	width: 100%;
+	border: none;
+	border-radius: 10px;
+}
+
+.label-input {
+	display: flex;
+	align-items: center;
+	margin: 8px;
+	background-color: rgba(2, 2, 2, 7);
+	background-image: linear-gradient(to top, transparent, rgba(4, 22, 11, 0.8));
+	box-shadow: 5px 5px 8px 5px rgba(0, 0, 0, 0.7);
+}
+
+.icon-modify {
+	color: #7f8c8d;
+	padding: 5px;
+}
+
+.second-content {
+	position: absolute;
+	display: flex;
+}
+
+.second-content .first-column {
+	order: 2;
+	z-index: -1;
+}
+
+.second-content .second-column {
+	order: 1;
+	z-index: -1;
+}
+
+.password {
+	color: #7f8c8d;
+	font-size: 14px;
+	margin: 15px 0;
+	text-align: center;
+}
+
+.sign-in-js .first-content .first-column, .sign-in-js .first-content .second-column
+	{
+	z-index: -1;
+}
+
+.sign-in-js .second-content .second-column {
+	z-index: 11;
+}
+
+.sign-in-js .second-content .first-column {
+	z-index: 13;
+}
+
+.sign-in-js .content::before{
+	left:60%;
+	border-top-left-radius:0;
+	border-bottom-left-radius:0;
+	border-top-right-radius:15px;
+	border-bottom-right-radius:15px;
+	animation: slidein 3s;	
+	z-index:12;
+}
+.sign-up-js .content::before{
+	animation: slideout 3s;
+	z-index: 12;
+}
+.sign-up-js .second-content .first-column,
+.sign-up-js .second-content .second-column{
+	z-index: -1;
+}
+.sign-up-js .first-content .second-column{
+	z-index: 11;
+}
+.sign-up-js .first-content .first-column{
+	z-index: 13;
+}
+/* deslocamento atrâs do content::before*/
+.sign-in-js .first-content .second-column{
+	z-index: -1;
+	position: relative;
+	animation: deslocamentoEsq 3s;
+}
+.sign-up-js .second-content .second-column{
+	z-index: -1;
+	position: relative;
+	animation: deslocamentoDir 3s;
+}
+
+@keyframes deslocamentoEsq{	
+	from{
+	  left:0;
+      opacity:1;
+	  z-index:12;
+	}	
+	25%{
+	  left: -80px;
+      opacity:.5;	  
+	}	
+	50%{
+	  left:-100px;
+      opacity:.2;
+	}	
+	to{
+	  left:-110px;
+      opacity:1;
+	  z-index:-1;
+	}	
+}
+
+@keyframes deslocamentoDir{
+	from{
+	  left:0;
+      z-index:12;
+	}	
+	25%{
+	  left: 80px;      	  
+	}	
+	50%{
+	  left:100px;
+	   background: url("../img/anime.png");
+	  }	
+	to{
+	  left:110px;
+      z-index:-1;
+	}	
+}
+
+/* animação */
+@keyframes slidein{
+	from {
+		left:0;
+		width:40%;
+	}	
+	25%{
+		left:5%;
+		width:50%;
+	}	
+	50%{
+		left:25%;
+		width:60%;		
+	}	
+	75%{
+		left:45%;
+		width:50%;
+	}	
+	to {
+	 left:60%;
+	 width:40%;	
+	}	
+}
+
+@keyframes slideout{
+	from {
+		left:60%;
+		width:40%;
+	}	
+	25%{
+		left:45%;
+		width:50%;
+	}	
+	50%{
+		left:25%;
+		width:60%;		
+	}	
+	75%{
+		left:5%;
+		width:50%;
+	}	
+	to {
+	 left:0;
+	 width:40%;	
+	}	
+}
+
+
+@media screen and (max-width: 759px) {
+ 
+.content{
+	width: 80%;
+    height: 400px;
+    margin:0px 60px 0px 0px;
+    padding:5px;
+ }
+	 
+.content::before{
+	height: 100%;
+	width:49%;
+	background-size: 650px;
+	background-repeat: no-repeat;
+ }
+ 
+.second-column{
+	height: 100%;
+	width:50%;
+ }
+
+.title-second{
+	font-size: 20px;
+ }
+
+.btn-close-modal {
+	width: 150px;
+	height: 80px;
+	top: 420px;
+	left: 50px;	
+}	
+
+.label-input {
+   width:180px;
+   margin-left:-40px;
+ }
+
+.cad input[type=text], .cad input[type=password], .cad input[type=email] {
+	width:100%;
+ }
+
+.sign-in-js .content::before{
+	left:55%;
+ }
+ 
+}
+/* fim config modal de login */ 
