@@ -139,21 +139,16 @@ for (i = 0; i < dropdown.length; i++) {
 		form_cad.user.focus();
 		return false;
 	}
-	else if (userPassword === "" || userPassword == !userPassword.indexOf(8)) {
-		alert(" preecha o campo senha ");
+	else if (userPassword === "" || userPassword === !userPassword.indexOf(8) || userPassword.length < 8 ) {
+	 alert(" preecha o campo senha com no minimo 8 caracteres !");	
 		form_cad.password.focus();
 		return false;
 	}
 	else {
-		alert(" usuario " + userName + " cadastrado(a) com sucesso! faça login e seja Bem Vindo(a)!! ");
+		alert(" usuario " + userName + " gostaria de usar um banco totalmente tecnologico? ");
 		document.forms['form_cad'].submit();
 	}
 }
- 
- 
- 
- 
- 
  
  
      setUserType = () => {
@@ -181,12 +176,6 @@ for (i = 0; i < dropdown.length; i++) {
 	document.forms['form_openCnt'].submit();
 }
  
- 
- 
- 
-
-
-
 
  
  /* inicio modal login */

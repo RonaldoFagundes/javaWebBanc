@@ -27,7 +27,7 @@
    
  <main class="main">
  
-    <header class="header">  
+    <header class="header-sbn">  
           <div class="logo"></div>
           <h1>Web bussines banc</h1>
         <div class="sidenav">
@@ -196,11 +196,32 @@
          </a>         
  </div>
        
-       <div class="open-count">
-         <form name="form_openCnt" action="abrirConta">
-          <button class="btn-open-count" id="cnt_new" onclick="openCnt()"><%out.println(opencnt);%></button>    
-        </form>             
-       </div>
+       
+            
+     
+       
+       
+  <div class="open-count">
+   <form name="form_openCnt" action="abrirConta">
+ 	 <div class="select-tipo-cnt">
+	  <p>Conta</p>
+	   <select name="new_cnt_tipo">           
+        <optgroup label=" Tipo ">  
+          <option value="" disabled selected>Selecione</option>                
+           <option value="001">Conta Corrente</option>	                       
+		   <option value="002">Poupança</option>
+		   <option value="003">Investimento</option>
+        </optgroup>  
+       </select> 
+      </div>
+     <button class="btn-open-count" id="cnt_new" onclick="openCnt()"><%out.println(opencnt);%></button> 
+  </form>
+ </div>
+       
+       
+       
+       
+       
        
 </section>
 

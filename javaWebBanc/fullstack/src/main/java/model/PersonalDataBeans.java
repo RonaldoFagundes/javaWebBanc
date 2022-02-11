@@ -1,5 +1,10 @@
 package model;
 
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class PersonalDataBeans.
@@ -104,18 +109,35 @@ public class PersonalDataBeans {
 	 * Sets the password.
 	 *
 	 * @param passwordP the new password
+	 * @throws NoSuchAlgorithmException 
+	 * @throws UnsupportedEncodingException 
 	 */
-	public void setPassword(String passwordP) {
-		this.password = passwordP;
+	
+	
+	
+	
+	public void setPassword(String passwordP) {		  
+		 this.password = passwordP;
+		 System.out.println(password); 
 	}
-
-	/**
-	 * Gets the password.
-	 *
-	 * @return the password
-	 */
-	public String getPassword() {
-		return password;
+ 
+	
+	
+	
+	public String getPassword() throws NoSuchAlgorithmException, UnsupportedEncodingException {
+		
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		 md.update(password.getBytes());
+		 BigInteger hash = new BigInteger(1, md.digest());
+		 return hash.toString(16);
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

@@ -30,16 +30,16 @@ public class Dao {
 	private String locahost = "//127.0.0.1:3306/";
 	
 	/** The database. */
-	private String database = "db_web_bussines_banc";
+	private String database = "db_web_business_banc";
 
 	/** The url. */
 	private String url = "jdbc:mysql:" + locahost + database + "?useTimezone=true&serverTimezone=UTC";
 
 	/** The user. */
-	private String user = "RFagundes";
+	private String user = "";
 
 	/** The password. */
-	private String password = "UREgoOymPF6LWa7H";
+	private String password = "";
 
 	/**
 	 * Connect.

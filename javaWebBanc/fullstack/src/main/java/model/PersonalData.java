@@ -1,5 +1,9 @@
 package model;
 
+
+
+import java.security.NoSuchAlgorithmException;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class PersonalData.
@@ -11,21 +15,22 @@ public class PersonalData extends Dao {
 
 	/** The id use. */
 	private int idUse;
-
+	
+	
 	/**
 	 * Logar.
 	 *
 	 * @param personaldata the personaldata
 	 * @return the string
 	 */
-	public String logar(PersonalDataBeans personaldata) {
+	public String logar(PersonalDataBeans dataBeans) {
 
 		sql = "select id, nome from view_logar  where usuario = ? and senha = ?";
 		try {
 			connect();
 			pst = conn.prepareStatement(sql);
-			pst.setString(1, personaldata.getUser());
-			pst.setString(2, personaldata.getPassword());
+			pst.setString(1, dataBeans.getUser());
+			pst.setString(2, dataBeans.getPassword());
 			rs = pst.executeQuery();
 			if (rs.next()) {
 				idUse = rs.getInt(1);
@@ -54,26 +59,46 @@ public class PersonalData extends Dao {
 	 *
 	 * @param dataBeans the data beans
 	 * @return the string
+	 * @throws NoSuchAlgorithmException 
 	 */
-	public String cadastrarUser(PersonalDataBeans dataBeans) {
-
-		sql = "call pro_cad_user (?,?,?,?)";
-		try {
-			connect();
+	
+	public String cadastrarUser(PersonalDataBeans dataBeans)  {
+    	 
+		 sql = "select id from view_logar where email=?";
+		 
+		 try {
+		  connect();
 			pst = conn.prepareStatement(sql);
-
-			pst.setString(1, dataBeans.getName());
-			pst.setString(2, dataBeans.getEmail());
-			pst.setString(3, dataBeans.getUser());
-			pst.setString(4, dataBeans.getPassword());
-			pst.executeUpdate();
-			conn.close();
-			rsp = " usuário " + dataBeans.getName() + " Cadastrado com sucesso! ";
-			System.out.println(rsp);
-		} catch (Exception ex) {
-			System.out.println(" erro no metodo cadastrarUser " + ex);
-		}
-		return rsp;
-	}
-
+			pst.setString(1, dataBeans.getEmail());	 
+			rs = pst.executeQuery();			
+			if (rs.next()) {				
+				 rsp = " email já cadastrado! ";			 
+				 conn.close();			   
+			}
+			else {				
+				 sql = "call pro_cad_user (?,?,?,?)";				  
+				   try {					
+					   connect();
+					   pst = conn.prepareStatement(sql);
+					   pst.setString(1, dataBeans.getName());
+					   pst.setString(2, dataBeans.getEmail());
+					   pst.setString(3, dataBeans.getUser());
+					   pst.setString(4, dataBeans.getPassword());
+					   pst.executeUpdate();
+					   conn.close();					   
+					   rsp = " usuário " + dataBeans.getName() + " Cadastrado com sucesso! ";
+					   } catch (Exception e) {
+					   System.out.println(" erro ao cadastrar " + e);
+			      	}			
+			     }
+		       } catch (Exception e) {			
+		           	System.out.println(" erro ao verificar email " + e);
+	 	    }
+		 		            return rsp;	
+	     }
+        
+        
+      
+	
+	
 }

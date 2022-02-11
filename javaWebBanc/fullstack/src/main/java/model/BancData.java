@@ -135,7 +135,7 @@ public class BancData extends Dao {
 	 */
 	public String getDocMovimentacao() {
 
-		sql = "select * from view_movimentacao order by id_mov desc limit 1 ;";
+		sql = "select * from view_movimentacao order by id desc limit 1 ;";
 		try {
 			connect();
 			pst = conn.prepareStatement(sql);
@@ -200,7 +200,7 @@ public class BancData extends Dao {
 
 		ArrayList<BancDataBeans> dados = new ArrayList<>();
 
-		sql = "select * from view_movimentacao where numero_cnt = ?";
+		sql = "select * from view_movimentacao where conta = ?";
 		try {
 			connect();
 			pst = conn.prepareStatement(sql);

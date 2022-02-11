@@ -27,466 +27,490 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class Controller.
- */
+* The Class Controller.
+*/
 @WebServlet(urlPatterns = { "/Controller", "/logar", "/cadastrar", "/mov", "/setsaldo", "/transacao", "/docpdf",
-		"/extrato", "/extpdf", "/simulador", "/investir", "/sobrenos", "/abrirConta" })
+	"/extrato", "/extpdf", "/simulador", "/investir", "/sobrenos", "/abrirConta" })
 public class Controller extends HttpServlet {
-	
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
 
-	/** The pd. */
-	PersonalData pd = new PersonalData();
-	
-	/** The pdb. */
-	PersonalDataBeans pdb = new PersonalDataBeans();
+/** The Constant serialVersionUID. */
+private static final long serialVersionUID = 1L;
 
-	/** The bd. */
-	BancData bd = new BancData();
-	
-	/** The bdb. */
-	BancDataBeans bdb = new BancDataBeans();
+/** The pd. */
+PersonalData pd = new PersonalData();
 
-	/** The user. */
-	private String user = "";
-	
-	/** The cnt. */
-	private String transacao, tipoTra, opencnt, cnt;
-	
-	/** The id cnt. */
-	private int idUse, idCnt;
-	
-	/** The valor. */
-	private BigDecimal saldo, valor;
-	
-	/** The currency BRL. */
-	private NumberFormat currencyBRL = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+/** The pdb. */
+PersonalDataBeans pdb = new PersonalDataBeans();
 
-	/** The today. */
-	private LocalDate today = LocalDate.now();
+/** The bd. */
+BancData bd = new BancData();
 
-	/** The formatter. */
-	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+/** The bdb. */
+BancDataBeans bdb = new BancDataBeans();
 
-	/** The contas. */
-	ArrayList<String> contas = new ArrayList<>();
+/** The user. */
+private String user = "";
 
-	/** The gerador. */
-	private Random gerador = new Random();
+/** The cnt. */
+private String  useUser, password ,transacao, tipoTra, cadastro ,opencnt, cnt,  cntNewS, cntTipo;
 
-	/**
-	 * Instantiates a new controller.
-	 */
-	public Controller() {
-		super();
+/** The id cnt. */
+private int idUse, idCnt, cntNewI;
+
+/** The valor. */
+private BigDecimal saldo, valor;
+
+/** The currency BRL. */
+private NumberFormat currencyBRL = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+
+/** The today. */
+private LocalDate today = LocalDate.now();
+
+/** The formatter. */
+private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+/** The contas. */
+ArrayList<String> contas = new ArrayList<>();
+
+/** The gerador. */
+private Random gerador = new Random();
+
+/**
+ * Instantiates a new controller.
+ */
+public Controller() {
+	super();
+}
+
+/**
+ * Do get.
+ *
+ * @param request the request
+ * @param response the response
+ * @throws ServletException the servlet exception
+ * @throws IOException Signals that an I/O exception has occurred.
+ */
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
+
+	String action = request.getServletPath();
+
+	System.out.println(action);
+
+	if (action.equals("/logar")) {
+		logar(request, response);
+	} else if (action.equals("/cadastrar")) {
+		cadastrar(request, response);
+	} else if (action.equals("/mov") || action.equals("/investir")) {
+		movimentacao(request, response);
+	} else if (action.equals("/setsaldo")) {
+		setarSaldo(request, response);
+	} else if (action.equals("/transacao")) {
+		lancarTransacao(request, response);
+	} else if (action.equals("/docpdf")) {
+		docTransacao(request, response);
+	} else if (action.equals("/extrato")) {
+		exibirExtrato(request, response);
+	} else if (action.equals("/extpdf")) {
+		emitirExtrato(request, response);
+	} else if (action.equals("/simulador")) {
+		simulador(request, response);
+	} else if (action.equals("/sobrenos")) {
+		sobrenos(request, response);
+	} else if (action.equals("/abrirConta")) {
+		abrirConta(request, response);
 	}
+}
 
-	/**
-	 * Do get.
-	 *
-	 * @param request the request
-	 * @param response the response
-	 * @throws ServletException the servlet exception
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+/**
+ * Logar.
+ *
+ * @param request the request
+ * @param response the response
+ * @throws ServletException the servlet exception
+ * @throws IOException Signals that an I/O exception has occurred.
+ */
+protected void logar(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
 
-		String action = request.getServletPath();
+	 useUser = request.getParameter("user");
+	 password = request.getParameter("password");
 
-		System.out.println(action);
+	System.out.println(useUser + " " + password);
 
-		if (action.equals("/logar")) {
-			logar(request, response);
-		} else if (action.equals("/cadastrar")) {
-			cadastrar(request, response);
-		} else if (action.equals("/mov") || action.equals("/investir")) {
-			movimentacao(request, response);
-		} else if (action.equals("/setsaldo")) {
-			setarSaldo(request, response);
-		} else if (action.equals("/transacao")) {
-			lancarTransacao(request, response);
-		} else if (action.equals("/docpdf")) {
-			docTransacao(request, response);
-		} else if (action.equals("/extrato")) {
-			exibirExtrato(request, response);
-		} else if (action.equals("/extpdf")) {
-			emitirExtrato(request, response);
-		} else if (action.equals("/simulador")) {
-			simulador(request, response);
-		} else if (action.equals("/sobrenos")) {
-			sobrenos(request, response);
-		} else if (action.equals("/abrirConta")) {
-			abrirConta(request, response);
-		}
-	}
+	pdb.setUser(useUser);
+	pdb.setPassword(password);
+	user = pd.logar(pdb);
+	idUse = pd.getIdUser();
 
-	/**
-	 * Logar.
-	 *
-	 * @param request the request
-	 * @param response the response
-	 * @throws ServletException the servlet exception
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	protected void logar(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	bdb.setUser(idUse);
 
-		String useUser = request.getParameter("user");
-		String password = request.getParameter("password");
+	contas = bd.getContaNumero(bdb);
 
-		System.out.println(useUser + " " + password);
+	if (user == null) {
+		System.out.println(" senha ou user incorretos! ");
 
-		pdb.setUser(useUser);
-		pdb.setPassword(password);
-		user = pd.logar(pdb);
-		idUse = pd.getIdUser();
+		request.setAttribute("confirm", "senha ou user incorretos!");
 
-		bdb.setUser(idUse);
+		RequestDispatcher erro = request.getRequestDispatcher("index.jsp");
+		erro.forward(request, response);
+	} else {
 
-		contas = bd.getContaNumero(bdb);
+		if (contas.isEmpty()) {
 
-		if (user == null) {
-			System.out.println(" senha ou user incorretos! ");
+			System.out.println(user + " Bem vindo(a) click aqui para nos conhecer ");
 
-			request.setAttribute("confirm", "senha ou user incorretos!");
+			request.setAttribute("user", " Olá visitante, " + user);
+			request.setAttribute("confirm", user + " Bem vindo(a) click aqui para nos conhecer ");
 
-			RequestDispatcher erro = request.getRequestDispatcher("index.jsp");
-			erro.forward(request, response);
+			RequestDispatcher conhecer = request.getRequestDispatcher("index.jsp");
+			conhecer.forward(request, response);
+
 		} else {
 
-			if (contas.isEmpty()) {
+			System.out.println(user + " Bem vindo(a) click aqui para navegar ");
 
-				System.out.println(user + " Bem vindo(a) click aqui para nos conhecer ");
+			request.setAttribute("user", " Olá cliente, " + user);
+			request.setAttribute("confirm", user + " Bem vindo(a) click aqui para navegar ");
 
-				request.setAttribute("user", " Olá visitante, " + user);
-				request.setAttribute("confirm", user + " Bem vindo(a) click aqui para nos conhecer ");
+			RequestDispatcher navegar = request.getRequestDispatcher("index.jsp");
+			navegar.forward(request, response);
 
-				RequestDispatcher conhecer = request.getRequestDispatcher("index.jsp");
-				conhecer.forward(request, response);
-
-			} else {
-
-				System.out.println(user + " Bem vindo(a) click aqui para navegar ");
-
-				request.setAttribute("user", " Olá cliente, " + user);
-				request.setAttribute("confirm", user + " Bem vindo(a) click aqui para navegar ");
-
-				RequestDispatcher navegar = request.getRequestDispatcher("index.jsp");
-				navegar.forward(request, response);
-
-			}
 		}
 	}
+}
 
-	/**
-	 * Cadastrar.
-	 *
-	 * @param request the request
-	 * @param response the response
-	 * @throws ServletException the servlet exception
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	protected void cadastrar(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+/**
+ * Cadastrar.
+ *
+ * @param request the request
+ * @param response the response
+ * @throws ServletException the servlet exception
+ * @throws IOException Signals that an I/O exception has occurred.
+ */
+protected void cadastrar(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
 
-		pdb.setName(request.getParameter("name").toString());
-		pdb.setEmail(request.getParameter("email").toString());
-		pdb.setUser(request.getParameter("user").toString());
-		pdb.setPassword(request.getParameter("password").toString());
+	pdb.setName(request.getParameter("name").toString());
+	pdb.setEmail(request.getParameter("email").toString());
+	pdb.setUser(request.getParameter("user").toString());
+	pdb.setPassword(request.getParameter("password").toString());
 
-		request.setAttribute("confirm", pd.cadastrarUser(pdb) + " faça o login! ");
+	cadastro =  pd.cadastrarUser(pdb) ;
+	
+	   if (cadastro.contains("email já cadastrado!")) {
+		   
+			cadastro = cadastro+" use outro email ";
+	   }
+	   else {
+		   
+		   cadastro = cadastro+" faça o login! "; 
+	   }
+	request.setAttribute("confirm", cadastro);
 
-		RequestDispatcher cad = request.getRequestDispatcher("index.jsp");
-		cad.forward(request, response);
+	RequestDispatcher cad = request.getRequestDispatcher("index.jsp");
+	cad.forward(request, response);
+}
+
+/**
+ * Movimentacao.
+ *
+ * @param request the request
+ * @param response the response
+ * @throws ServletException the servlet exception
+ * @throws IOException Signals that an I/O exception has occurred.
+ */
+protected void movimentacao(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
+
+	request.setAttribute("user", user);
+
+	request.setAttribute("conta", contas);
+
+	RequestDispatcher mov = request.getRequestDispatcher("movimentacao.jsp");
+	mov.forward(request, response);
+
+}
+
+/**
+ * Setar saldo.
+ *
+ * @param request the request
+ * @param response the response
+ * @throws ServletException the servlet exception
+ * @throws IOException Signals that an I/O exception has occurred.
+ */
+protected void setarSaldo(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
+
+	bdb.setConta(request.getParameter("contaN").trim());
+
+	cnt = request.getParameter("contaN").trim();
+
+	saldo = bd.getSaldo(bdb);
+
+	request.setAttribute("user", user);
+
+	request.setAttribute("conta", contas);
+
+	request.setAttribute("cnt", " nº " + cnt);
+
+	request.setAttribute("saldo", currencyBRL.format(saldo));
+
+	RequestDispatcher sld = request.getRequestDispatcher("movimentacao.jsp");
+	sld.forward(request, response);
+
+}
+
+/**
+ * Lancar transacao.
+ *
+ * @param request the request
+ * @param response the response
+ * @throws ServletException the servlet exception
+ * @throws IOException Signals that an I/O exception has occurred.
+ */
+protected void lancarTransacao(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
+
+	idCnt = bd.getIdConta(bdb);
+
+	transacao = request.getParameter("tran_tipo");
+
+	valor = new BigDecimal(request.getParameter("valor").trim().replace(",", "."));
+
+	if (transacao.contains("Pagamento") || transacao.contains("Pix")) {
+		tipoTra = "Saida";
+	} else {
+		tipoTra = "Entrada";
 	}
 
-	/**
-	 * Movimentacao.
-	 *
-	 * @param request the request
-	 * @param response the response
-	 * @throws ServletException the servlet exception
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	protected void movimentacao(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	bdb.setToday(today);
+	bdb.setTipo(tipoTra);
+	bdb.setCod(request.getParameter("codigo"));
+	bdb.setValor(valor);
+	bdb.setIdConta(idCnt);
 
-		request.setAttribute("user", user);
+	request.setAttribute("user", user);
+	request.setAttribute("conta", contas);
+	request.setAttribute("return", bd.lancarMovimentacao(bdb));
 
-		request.setAttribute("conta", contas);
+	request.setAttribute("doc", bd.getDocMovimentacao());
 
-		RequestDispatcher mov = request.getRequestDispatcher("movimentacao.jsp");
-		mov.forward(request, response);
+	RequestDispatcher tran = request.getRequestDispatcher("movimentacao.jsp");
+	tran.forward(request, response);
 
+}
+
+/**
+ * Doc transacao.
+ *
+ * @param request the request
+ * @param response the response
+ * @throws ServletException the servlet exception
+ * @throws IOException Signals that an I/O exception has occurred.
+ */
+protected void docTransacao(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
+
+	Document doc = new Document();
+
+	try {
+		response.setContentType("apllication/pdf");
+		response.addHeader("Content-Disposition", "inline; filename=" + "doc.pdf");
+		PdfWriter.getInstance(doc, response.getOutputStream());
+		doc.open();
+
+		doc.add(new Paragraph(" Comprovante de transação: "));
+		doc.add(new Paragraph(" "));
+
+		PdfPTable tabela = new PdfPTable(4);
+		PdfPCell col1 = new PdfPCell(new Paragraph("Data"));
+		PdfPCell col2 = new PdfPCell(new Paragraph("Tipo"));
+		PdfPCell col3 = new PdfPCell(new Paragraph("Cod"));
+		PdfPCell col4 = new PdfPCell(new Paragraph("Valor"));
+
+		tabela.addCell(col1);
+		tabela.addCell(col2);
+		tabela.addCell(col3);
+		tabela.addCell(col4);
+
+		tabela.addCell(bd.getDocData());
+		tabela.addCell(bd.getDocTipo());
+		tabela.addCell(bd.getDocCod());
+		tabela.addCell(bd.getDocValor().toString());
+
+		doc.add(tabela);
+		doc.close();
+	} catch (Exception ex) {
+		System.out.println(ex);
+		doc.close();
 	}
 
-	/**
-	 * Setar saldo.
-	 *
-	 * @param request the request
-	 * @param response the response
-	 * @throws ServletException the servlet exception
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	protected void setarSaldo(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+}
 
-		bdb.setConta(request.getParameter("contaN").trim());
+/**
+ * Exibir extrato.
+ *
+ * @param request the request
+ * @param response the response
+ * @throws ServletException the servlet exception
+ * @throws IOException Signals that an I/O exception has occurred.
+ */
+protected void exibirExtrato(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
 
-		cnt = request.getParameter("contaN").trim();
+	ArrayList<BancDataBeans> lista = bd.getExtrato(bdb);
 
-		saldo = bd.getSaldo(bdb);
+	request.setAttribute("user", user);
+	request.setAttribute("cnt", " conta nº " + cnt);
+	request.setAttribute("dados", lista);
 
-		request.setAttribute("user", user);
+	RequestDispatcher ext = request.getRequestDispatcher("extrato.jsp");
+	ext.forward(request, response);
+}
 
-		request.setAttribute("conta", contas);
+/**
+ * Emitir extrato.
+ *
+ * @param request the request
+ * @param response the response
+ * @throws ServletException the servlet exception
+ * @throws IOException Signals that an I/O exception has occurred.
+ */
+protected void emitirExtrato(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
 
-		request.setAttribute("cnt", " nº " + cnt);
+	Document doc = new Document();
 
-		request.setAttribute("saldo", currencyBRL.format(saldo));
+	try {
+		response.setContentType("apllication/pdf");
+		response.addHeader("Content-Disposition", "inline; filename=" + "doc.pdf");
+		PdfWriter.getInstance(doc, response.getOutputStream());
+		doc.open();
 
-		RequestDispatcher sld = request.getRequestDispatcher("movimentacao.jsp");
-		sld.forward(request, response);
+		doc.add(new Paragraph(" Extrato Bancário: "));
+		doc.add(new Paragraph(" "));
 
-	}
+		PdfPTable tabela = new PdfPTable(4);
+		PdfPCell col1 = new PdfPCell(new Paragraph("Data"));
+		PdfPCell col2 = new PdfPCell(new Paragraph("Tipo"));
+		PdfPCell col3 = new PdfPCell(new Paragraph("Cod"));
+		PdfPCell col4 = new PdfPCell(new Paragraph("Valor"));
 
-	/**
-	 * Lancar transacao.
-	 *
-	 * @param request the request
-	 * @param response the response
-	 * @throws ServletException the servlet exception
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	protected void lancarTransacao(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
-		idCnt = bd.getIdConta(bdb);
-
-		transacao = request.getParameter("tran_tipo");
-
-		valor = new BigDecimal(request.getParameter("valor").trim().replace(",", "."));
-
-		if (transacao.contains("Pagamento") || transacao.contains("Pix")) {
-			tipoTra = "Saida";
-		} else {
-			tipoTra = "Entrada";
-		}
-
-		bdb.setToday(today);
-		bdb.setTipo(tipoTra);
-		bdb.setCod(request.getParameter("codigo"));
-		bdb.setValor(valor);
-		bdb.setIdConta(idCnt);
-
-		request.setAttribute("user", user);
-		request.setAttribute("conta", contas);
-		request.setAttribute("return", bd.lancarMovimentacao(bdb));
-
-		request.setAttribute("doc", bd.getDocMovimentacao());
-
-		RequestDispatcher tran = request.getRequestDispatcher("movimentacao.jsp");
-		tran.forward(request, response);
-
-	}
-
-	/**
-	 * Doc transacao.
-	 *
-	 * @param request the request
-	 * @param response the response
-	 * @throws ServletException the servlet exception
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	protected void docTransacao(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
-		Document doc = new Document();
-
-		try {
-			response.setContentType("apllication/pdf");
-			response.addHeader("Content-Disposition", "inline; filename=" + "doc.pdf");
-			PdfWriter.getInstance(doc, response.getOutputStream());
-			doc.open();
-
-			doc.add(new Paragraph(" Comprovante de transação: "));
-			doc.add(new Paragraph(" "));
-
-			PdfPTable tabela = new PdfPTable(4);
-			PdfPCell col1 = new PdfPCell(new Paragraph("Data"));
-			PdfPCell col2 = new PdfPCell(new Paragraph("Tipo"));
-			PdfPCell col3 = new PdfPCell(new Paragraph("Cod"));
-			PdfPCell col4 = new PdfPCell(new Paragraph("Valor"));
-
-			tabela.addCell(col1);
-			tabela.addCell(col2);
-			tabela.addCell(col3);
-			tabela.addCell(col4);
-
-			tabela.addCell(bd.getDocData());
-			tabela.addCell(bd.getDocTipo());
-			tabela.addCell(bd.getDocCod());
-			tabela.addCell(bd.getDocValor().toString());
-
-			doc.add(tabela);
-			doc.close();
-		} catch (Exception ex) {
-			System.out.println(ex);
-			doc.close();
-		}
-
-	}
-
-	/**
-	 * Exibir extrato.
-	 *
-	 * @param request the request
-	 * @param response the response
-	 * @throws ServletException the servlet exception
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	protected void exibirExtrato(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		tabela.addCell(col1);
+		tabela.addCell(col2);
+		tabela.addCell(col3);
+		tabela.addCell(col4);
 
 		ArrayList<BancDataBeans> lista = bd.getExtrato(bdb);
 
-		request.setAttribute("user", user);
-		request.setAttribute("cnt", " conta nº " + cnt);
-		request.setAttribute("dados", lista);
-
-		RequestDispatcher ext = request.getRequestDispatcher("extrato.jsp");
-		ext.forward(request, response);
-	}
-
-	/**
-	 * Emitir extrato.
-	 *
-	 * @param request the request
-	 * @param response the response
-	 * @throws ServletException the servlet exception
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	protected void emitirExtrato(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
-		Document doc = new Document();
-
-		try {
-			response.setContentType("apllication/pdf");
-			response.addHeader("Content-Disposition", "inline; filename=" + "doc.pdf");
-			PdfWriter.getInstance(doc, response.getOutputStream());
-			doc.open();
-
-			doc.add(new Paragraph(" Extrato Bancário: "));
-			doc.add(new Paragraph(" "));
-
-			PdfPTable tabela = new PdfPTable(4);
-			PdfPCell col1 = new PdfPCell(new Paragraph("Data"));
-			PdfPCell col2 = new PdfPCell(new Paragraph("Tipo"));
-			PdfPCell col3 = new PdfPCell(new Paragraph("Cod"));
-			PdfPCell col4 = new PdfPCell(new Paragraph("Valor"));
-
-			tabela.addCell(col1);
-			tabela.addCell(col2);
-			tabela.addCell(col3);
-			tabela.addCell(col4);
-
-			ArrayList<BancDataBeans> lista = bd.getExtrato(bdb);
-
-			for (int i = 0; i < lista.size(); i++) {
-				tabela.addCell(lista.get(i).getHoje());
-				tabela.addCell(lista.get(i).getTipo());
-				tabela.addCell(lista.get(i).getCod());
-				tabela.addCell(lista.get(i).getValor().toString());
-			}
-
-			doc.add(tabela);
-			doc.close();
-		} catch (Exception ex) {
-			System.out.println(ex);
-			doc.close();
+		for (int i = 0; i < lista.size(); i++) {
+			tabela.addCell(lista.get(i).getHoje());
+			tabela.addCell(lista.get(i).getTipo());
+			tabela.addCell(lista.get(i).getCod());
+			tabela.addCell(lista.get(i).getValor().toString());
 		}
 
+		doc.add(tabela);
+		doc.close();
+	} catch (Exception ex) {
+		System.out.println(ex);
+		doc.close();
 	}
 
-	/**
-	 * Simulador.
-	 *
-	 * @param request the request
-	 * @param response the response
-	 * @throws ServletException the servlet exception
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	protected void simulador(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+}
 
-		if (contas.isEmpty()) {
-			request.setAttribute("user", " Visitante  " + user);
-		} else {
-			request.setAttribute("user", " Cliente  " + user);
-		}
+/**
+ * Simulador.
+ *
+ * @param request the request
+ * @param response the response
+ * @throws ServletException the servlet exception
+ * @throws IOException Signals that an I/O exception has occurred.
+ */
+protected void simulador(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
 
-		request.setAttribute("today", " ultima atualização   " + today.format(formatter));
-
-		RequestDispatcher simu = request.getRequestDispatcher("simulador.jsp");
-		simu.forward(request, response);
-
+	if (contas.isEmpty()) {
+		request.setAttribute("user", " Visitante  " + user);
+	} else {
+		request.setAttribute("user", " Cliente  " + user);
 	}
 
-	/**
-	 * Sobrenos.
-	 *
-	 * @param request the request
-	 * @param response the response
-	 * @throws ServletException the servlet exception
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	protected void sobrenos(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	request.setAttribute("today", " ultima atualização   " + today.format(formatter));
 
-		if (contas.isEmpty()) {
-			request.setAttribute("user", " Visitante  " + user);
-		} else {
-			request.setAttribute("user", " Cliente  " + user);
-		}
+	RequestDispatcher simu = request.getRequestDispatcher("simulador.jsp");
+	simu.forward(request, response);
 
-		opencnt = "Abra já a sua conta!";
+}
 
-		request.setAttribute("opencnt", opencnt);
-		RequestDispatcher sn = request.getRequestDispatcher("sobrenos.jsp");
-		sn.forward(request, response);
+/**
+ * Sobrenos.
+ *
+ * @param request the request
+ * @param response the response
+ * @throws ServletException the servlet exception
+ * @throws IOException Signals that an I/O exception has occurred.
+ */
+protected void sobrenos(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
 
+	if (contas.isEmpty()) {
+		request.setAttribute("user", " Visitante  " + user);
+	} else {
+		request.setAttribute("user", " Cliente  " + user);
 	}
 
-	/**
-	 * Abrir conta.
-	 *
-	 * @param request the request
-	 * @param response the response
-	 * @throws ServletException the servlet exception
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	protected void abrirConta(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	opencnt = "Abra já a sua conta!";
 
-		int cntNewI = gerador.nextInt(9998);
-		String cntNewS = String.valueOf(cntNewI);
+	request.setAttribute("opencnt", opencnt);
+	RequestDispatcher sn = request.getRequestDispatcher("sobrenos.jsp");
+	sn.forward(request, response);
 
-		String tipoNew = "001";
+}
 
-		bdb.setConta(cntNewS);
+/**
+ * Abrir conta.
+ *
+ * @param request the request
+ * @param response the response
+ * @throws ServletException the servlet exception
+ * @throws IOException Signals that an I/O exception has occurred.
+ */
+protected void abrirConta(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException {
 
-		bdb.setTipo(tipoNew);
+	
+	
+	
+	 cntNewI = gerador.nextInt(9998);
+	 cntNewS = String.valueOf(cntNewI);
 
-		bdb.setUser(idUse);
+	  
+	
+	 
+	   if (cnt == cntNewS) {
+		   
+		cntNewI = gerador.nextInt(9998);   
+	   }
+	  
+	
+	cntNewS = String.valueOf(cntNewI);	
 
-		request.setAttribute("user", user);
-		request.setAttribute("opencnt", user + " " + bd.abrirConta(bdb) + " faça login novamente! ");
-		RequestDispatcher sn = request.getRequestDispatcher("sobrenos.jsp");
-		sn.forward(request, response);
+	cntTipo = request.getParameter("new_cnt_tipo");
+	
+	bdb.setConta(cntNewS);
 
-	}
+	bdb.setTipo(cntTipo);
+
+	bdb.setUser(idUse);
+
+	request.setAttribute("user", user);
+	request.setAttribute("opencnt", user + " " + bd.abrirConta(bdb) + " faça login novamente! ");
+	RequestDispatcher sn = request.getRequestDispatcher("sobrenos.jsp");
+	sn.forward(request, response);
+
+}
 
 }
