@@ -35,10 +35,10 @@ public class Dao {
 	/** The url. */
 	private String url = "jdbc:mysql:" + locahost + database + "?useTimezone=true&serverTimezone=UTC";
 
-	/** The user. */
+	/** The user.  --usuario do banco de dados-- */
 	private String user = "";
 
-	/** The password. */
+	/** The password. --senha do banco de dados-- */
 	private String password = "";
 
 	/**
