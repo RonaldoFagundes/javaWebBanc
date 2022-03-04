@@ -10,4 +10,4 @@
 | html       | java    |   mysql   |
 | css        | jsp     |           |
 | bootstrap  | servlet |           |
-| javascript |         |           |
+| javascript |  mvc    |           |
