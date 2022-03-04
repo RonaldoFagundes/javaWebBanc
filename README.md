@@ -7,7 +7,7 @@
 
 |  frontend  | backend | database  |
 |------------|---------|-----------|
-| html       |  java   |   mysql   |
-| css        |  jsp    |           |
-| bootstrap  |         |           |
+| html       | java    |   mysql   |
+| css        | jsp     |           |
+| bootstrap  | servlet |           |
 | javascript |         |           |
