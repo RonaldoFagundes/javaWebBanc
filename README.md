@@ -1,6 +1,7 @@
 # javaWebBanc
 ## aplication java web
-###" simulador bancario com cadastro ,abertura de contas e movimentação "
+* simulador bancario com cadastro 
+* abertura de contas e movimentação 
 
 |  frontend  | backend | database  |
 |------------|---------|-----------|
