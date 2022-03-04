@@ -1,6 +1,6 @@
 # javaWebBanc
 ## aplication java web
-### simulador bancario 
+### simulador bancário 
 *  cadastro 
 *  abertura de contas 
 *  movimentação 
